@@ -1,0 +1,60 @@
+/* -- Buscar Documentos en Mongo DB */
+
+// use indica a MongoDB que base de datos queremos usar. Si la base de datos no existe, se creará automáticamente.
+use('sample_mflix')
+
+/* -- Buscar un Solo Documento -- */
+// findOne() devuelve el primer documento que cumple con los criterios de búsqueda.
+// La estructura de findOne es la siguiente
+// db.<nombre de la colección>.findOne(<criterio de búsqueda>, <proyección>, <opciones>)
+
+// Encontrar la pelicula con el titulo "The Godfather"
+db.movies.findOne({ title: "The Godfather" })
+
+// Encontrar una pelicula por ID
+db.movies.findOne({ _id: ObjectId("573a1391f29313caabcd6ea2") })
+
+/* -- Buscar Multiples Documentos -- */
+// find() se utiliza para buscar documentos en una colección y devolver los resutlados en un cursor. Un cursor es un puntero a los resultados de la consulta y e puede recorrer para acceder a los documentos.
+
+// Encontrar todas las peliculas
+db.movies.find()
+
+// Encontrar las 3 primeras peliculas
+db.movies.find().limit(3)
+
+// Contar cuantas peliculas hay en la colección
+db.movies.find({}).count()
+
+// Traer las últimas 5 peliculas ordenadas por el title, y solo devolver el title -1 es para ordenar de forma descendente
+db.movies.find({}, { title: 1 }).sort({ title: -1 }).limit(5)
+
+// Traer las últimas 5 peliculas ordenadas por el title, y solo devolver el title y year. -1 es para ordenar de forma descendente, SIN EL ID (_id: 0)
+db.movies.find({}, { title: 1, year: 1, _id: 0 }).sort({ title: -1 }).limit(5)
+
+// Contar cuantas peliculas con el rating "PG" hay en la colección
+db.movies.find({rated: 'PG'}).count()
+
+/* -- Operadores de Comparación -- */
+// Un operador de comparación en MongoDB es una expresión que compara campos en documentos y devuelve documentos que coinciden con la condición especificada.
+
+// Contar cuantas peliculas hay con rating "PG" y "PG-13"
+db.movies.find({rated: { $in: ['PG', 'PG-13'] } }).count() // in = cualquiera de los valores de la lista
+
+// Traer todas las peliculas con imdb.rating mayor a 9
+db.movies.find({ 'imdb.rating': { $gt: 9 } }) // gt = mayor que
+
+// Encontrar el top 10 de peliculas con mejor rating de imbd, ignorando los campos vacios, devolviendo solo el title y el imdb.rating.
+// $ne = not equal: es un operador de comparación que selecciona los documentos donde el valor del campo no es igual al valor especificado.
+db.movies.find({ 'imdb.rating': { $ne: '' } }, { title: 1, 'imdb.rating': 1, _id: 0 }).sort({ 'imdb.rating': -1 }).limit(10)
+
+
+
+
+
+
+
+
+
+
+
