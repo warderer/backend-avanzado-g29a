@@ -22,11 +22,21 @@ const getAllCars = async (req, res) => {
   }
 }
 
+const getCarById = async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id) // equivalente a SELECT * FROM cars WHERE id = req.params.id
+    res.status(200).json(car)
+  } catch (error) {
+    res.status(400).json({ message: `Error Getting Car: ${error}` })
+  }
+}
+
 // Update
 
 // Delete
 
 export {
   createCar,
-  getAllCars
+  getAllCars,
+  getCarById
 }
