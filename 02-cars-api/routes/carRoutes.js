@@ -6,5 +6,6 @@ const carRoutes = express.Router()
 carRoutes.post('/cars', carController.createCar)
 carRoutes.get('/cars', carController.getAllCars)
 carRoutes.get('/cars/:id', carController.getCarById)
+carRoutes.patch('/cars/:id', carController.updateCarById)
 
 export default carRoutes

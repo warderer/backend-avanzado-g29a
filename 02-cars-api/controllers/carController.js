@@ -32,11 +32,23 @@ const getCarById = async (req, res) => {
 }
 
 // Update
+const updateCarById = async (req, res) => {
+  // Para actualizar normalmente comprobamos si el carro existe (findById), y luego lo actualizamos (updateOne).
+  // Pero en Mongoose podemos hacerlo en una sola línea con findByIdAndUpdate.
+  // { new: true } es para que nos devuelva el carro actualizado
+  try {
+    const updatedCar = await Car.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.status(200).json(updatedCar)
+  } catch (error) {
+    res.status(400).json({ message: `Error Updating Car: ${error}` })
+  }
+}
 
 // Delete
 
 export {
   createCar,
   getAllCars,
-  getCarById
+  getCarById,
+  updateCarById
 }
