@@ -5,6 +5,19 @@ import Book from '../models/Book.js'
 const createBook = async (req, res) => {
   const bookData = req.body
 
+  // Validaciones
+  if (!bookData) {
+    return res.status(400).json({ error: 'Missing book data' })
+  }
+
+  if (!bookData.authors) {
+    return res.status(400).json({ error: 'Missing authors data' })
+  }
+
+  if (!Array.isArray(bookData.authors)) {
+    return res.status(400).json({ error: 'Authors must be an array' })
+  }
+
   // Crear autores, uno por uno y esperar a que todos se guarden
   try {
     const authorModels = await Promise.all(bookData.authors.map(async author => {
