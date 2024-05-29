@@ -6,7 +6,7 @@ const createBook = async (req, res) => {
   const bookData = req.body
 
   // Validaciones
-  if (!bookData) {
+  if (Object.keys(bookData).length === 0) {
     return res.status(400).json({ error: 'Missing book data' })
   }
 
