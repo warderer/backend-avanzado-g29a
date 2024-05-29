@@ -9,7 +9,7 @@ app.use(express.json())
 // Aquí van las rutas
 
 // Levantar el servidor
-connect().then(async () => {
+connect().then(() => {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} 🚀`)
   })
