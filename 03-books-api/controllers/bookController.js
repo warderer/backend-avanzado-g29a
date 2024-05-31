@@ -59,8 +59,27 @@ const getAllBooks = async (req, res) => {
   }
 }
 
+const getBookById = async (req, res) => {
+  // Valido que el ID sea un ObjectID válido de MongoDB (24 caracteres alfanuméricos)
+  if (!req.params.bookId.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json({ error: 'Invalid book ID' })
+  }
+
+  try {
+    const book = await Book
+      .findById({ _id: req.params.bookId, isActive: true })
+      .populate('authors')
+    if (!book) {
+      return res.status(404).json({ error: 'Book not found' })
+    }
+    res.status(200).json(book)
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
+}
+
 // UPDATE
 
 // DELETE
 
-export { createBook, getAllBooks }
+export { createBook, getAllBooks, getBookById }
